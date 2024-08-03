@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.gui.Gui;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +68,7 @@ public class bwHUD {
             String JSONScannerLine;
             StringBuffer playerJSON = new StringBuffer();
 
-            String playerURL = "https://api.hypixel.net/player?key=f52b3e5e-a03e-46fb-bdf3-07734141ea47&name=thiccbears";
+            String playerURL = "https://api.hypixel.net/player?key=f52b3e5e-a03e-46fb-bdf3-07734141ea47&name=realmtor";
 
             try {
                 URL req = new URL(playerURL);
@@ -111,7 +112,7 @@ public class bwHUD {
                         }
                     }
 
-                    currentPlayer = new playerData("thiccbears", Integer.parseInt(playerBWLevel), playerRank, false);
+                    currentPlayer = new playerData("realmtor", Integer.parseInt(playerBWLevel), playerRank, false);
                     System.out.println(playerRank);
                 }
 
@@ -129,23 +130,27 @@ public class bwHUD {
         // coordinates (screenWidth, screenHeight) is bottom right of your screen
 
         final FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
-        fr.FONT_HEIGHT = 6;
+        GlStateManager.pushMatrix();
 
+        float scale = 0.7f;
+        GlStateManager.scale(scale, scale, scale);
 
         final int top = 0;
         final int left = 0;
         final int bottom = resolution.getScaledHeight();
         final int right = resolution.getScaledWidth();
 
-
-        Gui.drawRect(10, 20, 110, 120, 0x66797c80);
+        Gui.drawRect(10, 20, 160, 120, 0x66797c80);
 
         for(int i = 0; i < serverPlayers.size(); i++)
         {
-            String playerDataRender = serverPlayers.get(i).getName() + ": [" + serverPlayers.get(i).getStarsAsString() + (char) 0x272B + "]";
-            fr.drawStringWithShadow(playerDataRender.toString(), 20, 30, serverPlayers.get(i).getHex());
-
+            String playerDataRender = serverPlayers.get(i).getName();
+            String starDataRender = "[" + serverPlayers.get(i).getStarsAsString() + (char) 0x272B + "]";
+            fr.drawStringWithShadow(starDataRender.toString(), 20, 30, serverPlayers.get(i).getStarHex());
+            fr.drawStringWithShadow(playerDataRender.toString(), 65, 30, serverPlayers.get(i).getHex());
         }
+
+        GlStateManager.popMatrix();
 
     }
 

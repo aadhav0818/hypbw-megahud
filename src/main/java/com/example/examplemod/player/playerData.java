@@ -35,19 +35,26 @@ public class playerData {
 
     public int getHex()
     {
-        if(this.rank.equals("\"UNRANKED\"")) {
-            return 0xAAAAAA;
-        }
-        else if(this.rank.equals("\"VIP\"") || this.rank.equals("\"VIP_PLUS\"")) {
-            return 0x55FF55;
-        }
-        else if(this.rank.equals("\"MVP\"") || this.rank.equals("\"MVP_PLUS\"")) {
-            return 0x55FFFF;
-        }
-        else if(this.rank.equals("\"MVP_PLUS_PLUS\"")) {
-            return 0xFFAA00;
-        }
+        if(this.rank.equals("\"UNRANKED\"")) { return 0xAAAAAA; }
+        else if(this.rank.equals("\"VIP\"") || this.rank.equals("\"VIP_PLUS\"")) { return 0x55FF55; }
+        else if(this.rank.equals("\"MVP\"") || this.rank.equals("\"MVP_PLUS\"")) { return 0x55FFFF; }
+        else if(this.rank.equals("\"MVP_PLUS_PLUS\"")) { return 0xFFAA00; }
         return 0xFFFFFF;
+    }
+
+    public int getStarHex()
+    {
+        if(this.stars < 100) { return 0xAAAAAA; }
+        else if(this.stars < 200) { return 0xFFFFFF; }
+        else if(this.stars < 300) { return 0xFFAA00; }
+        else if(this.stars < 400) { return 0x55FFFF; }
+        else if(this.stars < 500) { return 0x00AA00; }
+        else if(this.stars < 600) { return 0x00AAAA; }
+        else if(this.stars < 700) { return 0xAA0000; }
+        else if(this.stars < 800) { return 0xFF55FF; }
+        else if(this.stars < 900) { return 0x5555FF; }
+        else if(this.stars < 1000) { return 0xAA00AA; }
+        return 0xFF5555;
     }
 
 }
