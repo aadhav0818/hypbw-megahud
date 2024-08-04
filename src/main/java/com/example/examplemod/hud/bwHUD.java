@@ -2,6 +2,7 @@ package com.example.examplemod.hud;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 import com.sun.jna.platform.unix.X11;
 import jdk.nashorn.internal.parser.JSONParser;
@@ -43,6 +44,7 @@ import java.net.URL;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -71,109 +73,129 @@ public class bwHUD {
         String message = event.message.getUnformattedText();
         System.out.println(message);
 
-        JsonParser parser = new JsonParser();
-        JsonObject locraw = parser.parse(String.valueOf(message)).getAsJsonObject();
-        String gameType = locraw.get("gametype").toString();
+        try {
+            JsonParser parser = new JsonParser();
+            JsonObject locraw = parser.parse(String.valueOf(message)).getAsJsonObject();
+            String gameType = locraw.get("gametype").toString();
 
-        serverAuth gameAuthenticator = new serverAuth();
+            serverAuth gameAuthenticator = new serverAuth();
+            isInBWGame = false;
 
-        if(gameType.equals("BEDWARS")) {
-            if(locraw.has("mode")) {
-                String BWGameMode = locraw.get("mode").toString();
-                if(gameAuthenticator.isValidGameType(gameType)) {
-                    isInBWGame = true;
+            if (gameType.equals("\"BEDWARS\"")) {
+                System.out.println("CHUB HAS JOINED BW");
+                if (locraw.has("mode")) {
+                    String BWGameMode = locraw.get("mode").toString();
+                    if (gameAuthenticator.isValidGameType(BWGameMode)) {
+                        isInBWGame = true;
+                    }
                 }
             }
+        } catch(JsonSyntaxException e) {
+            System.out.println("JSONSYNTAXEXCEP");
+        } catch(IllegalStateException e) {
+            System.out.println("NOTAJSON noob");
         }
     }
 
     @SubscribeEvent
     public void entityJoinWorld(EntityJoinWorldEvent e) throws IOException
     {
-        if(!e.world.isRemote) {
-            playerNames.add(e.entity.getName());
-
-            for (String playerName : playerNames) {
-                if (e.entity != null && e.entity instanceof EntityPlayer) {
-
-                    if (Minecraft.getMinecraft().thePlayer != null && e.entity == Minecraft.getMinecraft().thePlayer) {
-                        Minecraft.getMinecraft().thePlayer.sendChatMessage("/locraw");
+        if(e.world.isRemote) {
+            if (Minecraft.getMinecraft().thePlayer != null && e.entity == Minecraft.getMinecraft().thePlayer) {
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/locraw");
+            }
+            if(isInBWGame) {
+                if(Minecraft.getMinecraft().theWorld != null)
+                {
+                    List<EntityPlayer> lobbyPlayers = Minecraft.getMinecraft().theWorld.playerEntities;
+                    for(EntityPlayer lobbyPlayer : lobbyPlayers) {
+                        if(!playerNames.contains(lobbyPlayer.getName()))
+                            playerNames.add(lobbyPlayer.getName());
                     }
+                }
+                System.out.println("CHUB: " + e.entity.getName());
+                for (String playerName : playerNames) {
+                    if (e.entity != null && e.entity instanceof EntityPlayer) {
 
-                    BufferedReader JSONScanner;
-                    String JSONScannerLine;
-                    StringBuffer playerJSON = new StringBuffer();
-
-                    String playerURL = "https://api.hypixel.net/player?key=f8fd15bb-9838-4859-849d-bc7272f788ed&name=" + playerName;
-                    boolean uniqueRequest = true;
-
-                    for(playerData serverPlayer: serverPlayers) {
-                        if (serverPlayer.getName().equals(playerName)) {
-                            uniqueRequest = false;
-                            break;
+                        if (Minecraft.getMinecraft().thePlayer != null && e.entity == Minecraft.getMinecraft().thePlayer) {
+                            Minecraft.getMinecraft().thePlayer.sendChatMessage("/locraw");
                         }
-                    }
 
-                    if(uniqueRequest) {
+                        BufferedReader JSONScanner;
+                        String JSONScannerLine;
+                        StringBuffer playerJSON = new StringBuffer();
 
-                        try {
-                            URL req = new URL(playerURL);
-                            HttpURLConnection connection = (HttpURLConnection) req.openConnection();
-                            connection.setRequestMethod("GET");
-                            connection.setConnectTimeout(5000);
-                            connection.setReadTimeout(5000);
-                            int status = connection.getResponseCode();
-                            System.out.print(status + " ");
+                        String playerURL = "https://api.hypixel.net/player?key=f8fd15bb-9838-4859-849d-bc7272f788ed&name=" + playerName;
+                        boolean uniqueRequest = true;
 
-                            JSONScanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-                            while ((JSONScannerLine = JSONScanner.readLine()) != null) {
-                                playerJSON.append(JSONScannerLine);
+                        for (playerData serverPlayer : serverPlayers) {
+                            if (serverPlayer.getName().equals(playerName)) {
+                                uniqueRequest = false;
+                                break;
                             }
+                        }
 
-                            JSONScanner.close();
-                            connection.disconnect();
+                        if (uniqueRequest) {
 
-                            JsonParser parser = new JsonParser();
-                            JsonObject playerJSONConverted = parser.parse(String.valueOf(playerJSON)).getAsJsonObject();
+                            try {
+                                URL req = new URL(playerURL);
+                                HttpURLConnection connection = (HttpURLConnection) req.openConnection();
+                                connection.setRequestMethod("GET");
+                                connection.setConnectTimeout(5000);
+                                connection.setReadTimeout(5000);
+                                int status = connection.getResponseCode();
+                                System.out.print(status + " ");
 
-                            JsonObject playerJSONplayer = playerJSONConverted.getAsJsonObject("player");
-                            playerData currentPlayer;
+                                JSONScanner = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-                            if (playerJSONplayer == null) {
-                                currentPlayer = new playerData("nickedplayer100", 0, "\"UNRANKED\"", true, 0);
-                            } else {
-                                JsonObject playerJSONachievements = playerJSONplayer.getAsJsonObject("achievements");
-                                JsonObject playerStats = playerJSONplayer.getAsJsonObject("stats");
-                                JsonObject playerBedwars = playerStats.getAsJsonObject("Bedwars");
-
-                                double playerFinalKills = playerBedwars.get("final_kills_bedwars").getAsDouble();
-                                double playerFinalDeaths = playerBedwars.get("final_deaths_bedwars").getAsDouble();
-                                double playerFKDR;
-                                if (playerFinalDeaths == 0)
-                                    playerFKDR = playerFinalKills;
-                                playerFKDR = Math.round(playerFinalKills / playerFinalDeaths * 100.0) / 100.0;
-
-                                String playerBWLevel = playerJSONachievements.get("bedwars_level").toString();
-                                String playerRank = "\"UNRANKED\"";
-
-                                if (playerJSONplayer.has("newPackageRank")) {
-                                    playerRank = playerJSONplayer.get("newPackageRank").toString();
-                                    if (playerJSONplayer.has("monthlyPackageRank")) {
-                                        if (playerJSONplayer.get("monthlyPackageRank").toString().equals("\"NONE\""))
-                                            playerRank = playerJSONplayer.get("newPackageRank").toString();
-                                        else
-                                            playerRank = "\"MVP_PLUS_PLUS\"";
-                                    }
+                                while ((JSONScannerLine = JSONScanner.readLine()) != null) {
+                                    playerJSON.append(JSONScannerLine);
                                 }
 
-                                currentPlayer = new playerData(playerName, Integer.parseInt(playerBWLevel), playerRank, false, playerFKDR);
-                                System.out.println(playerRank);
-                            }
+                                JSONScanner.close();
+                                connection.disconnect();
 
-                            serverPlayers.add(currentPlayer);
-                        } catch (IOException ex) {
-                            System.out.println("BAD REQUEST");
+                                JsonParser parser = new JsonParser();
+                                JsonObject playerJSONConverted = parser.parse(String.valueOf(playerJSON)).getAsJsonObject();
+
+                                JsonObject playerJSONplayer = playerJSONConverted.getAsJsonObject("player");
+                                playerData currentPlayer;
+
+                                if (playerJSONplayer == null) {
+                                    currentPlayer = new playerData("nickedplayer100", 0, "\"UNRANKED\"", true, 0);
+                                } else {
+                                    JsonObject playerJSONachievements = playerJSONplayer.getAsJsonObject("achievements");
+                                    JsonObject playerStats = playerJSONplayer.getAsJsonObject("stats");
+                                    JsonObject playerBedwars = playerStats.getAsJsonObject("Bedwars");
+
+                                    double playerFinalKills = playerBedwars.get("final_kills_bedwars").getAsDouble();
+                                    double playerFinalDeaths = playerBedwars.get("final_deaths_bedwars").getAsDouble();
+                                    double playerFKDR;
+                                    if (playerFinalDeaths == 0)
+                                        playerFKDR = playerFinalKills;
+                                    playerFKDR = Math.round(playerFinalKills / playerFinalDeaths * 100.0) / 100.0;
+
+                                    String playerBWLevel = playerJSONachievements.get("bedwars_level").toString();
+                                    String playerRank = "\"UNRANKED\"";
+
+                                    if (playerJSONplayer.has("newPackageRank")) {
+                                        playerRank = playerJSONplayer.get("newPackageRank").toString();
+                                        if (playerJSONplayer.has("monthlyPackageRank")) {
+                                            if (playerJSONplayer.get("monthlyPackageRank").toString().equals("\"NONE\""))
+                                                playerRank = playerJSONplayer.get("newPackageRank").toString();
+                                            else
+                                                playerRank = "\"MVP_PLUS_PLUS\"";
+                                        }
+                                    }
+
+                                    currentPlayer = new playerData(playerName, Integer.parseInt(playerBWLevel), playerRank, false, playerFKDR);
+                                    System.out.println(playerRank);
+                                }
+
+                                serverPlayers.add(currentPlayer);
+                            } catch (IOException ex) {
+                                System.out.println("BAD REQUEST");
+                            }
                         }
                     }
                 }
