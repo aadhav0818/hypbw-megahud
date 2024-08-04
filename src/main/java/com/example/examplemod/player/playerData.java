@@ -8,12 +8,15 @@ public class playerData {
     private int stars;
     private String rank;
     private boolean isNicked;
+    private double FKDR;
 
-    public playerData(String name, int stars, String rank, boolean isNicked)
+    public playerData(String name, int stars, String rank, boolean isNicked, double FKDR)
     {
         this.name = name;
         this.stars = stars;
         this.rank = rank;
+        this.isNicked = isNicked;
+        this.FKDR = FKDR;
     }
 
     public int getStars() {
@@ -32,6 +35,10 @@ public class playerData {
     {
         return this.rank;
     }
+
+    public double getFKDR() { return this.FKDR; }
+
+    public String getFDKRAsString() { return String.valueOf(this.getFKDR()); }
 
     public int getHex()
     {
@@ -55,6 +62,14 @@ public class playerData {
         else if(this.stars < 900) { return 0x5555FF; }
         else if(this.stars < 1000) { return 0xAA00AA; }
         return 0xFF5555;
+    }
+
+    public int getFKDRHex()
+    {
+        if(this.FKDR < 1) { return 0xfc7260; }
+        if(this.FKDR < 3) { return 0xf0e962; }
+        if(this.FKDR < 8) { return 0x77e84a; }
+        return 0x33de9a;
     }
 
 }
