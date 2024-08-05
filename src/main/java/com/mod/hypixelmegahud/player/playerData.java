@@ -1,6 +1,4 @@
-package com.example.examplemod.player;
-
-
+package com.mod.hypixelmegahud.player;
 
 public class playerData {
 
@@ -38,6 +36,8 @@ public class playerData {
 
     public double getFKDR() { return this.FKDR; }
 
+    public boolean isNicked() { return isNicked; }
+
     public String getFDKRAsString() { return String.valueOf(this.getFKDR()); }
 
     public int getHex()
@@ -71,5 +71,12 @@ public class playerData {
         if(this.FKDR < 8) { return 0x77e84a; }
         return 0x33de9a;
     }
+
+    public int getNickHex()
+    {
+        if(isNicked) { return 0xfc7260; }
+        return 0x77e84a;
+    }
+
 
 }

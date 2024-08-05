@@ -1,4 +1,4 @@
-package com.example.examplemod.gamecore;
+package com.mod.hypixelmegahud.gamecore;
 
 public class serverAuth {
 
