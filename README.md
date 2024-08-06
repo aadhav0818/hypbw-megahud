@@ -31,8 +31,8 @@ public class apiAuth {
 }
 ```
 - HTTP GET requests to the Hypixel API should be made as shown below:
-`https://api.hypixel.net/player?key="insert key"&name="insert name"`
->
+```https://api.hypixel.net/player?key="insert key"&name="insert name"```
+
 
 ## Dependencies
 - Google's GSON library is used to parse player JSON files after an HTTP request.
