@@ -15,7 +15,7 @@
 private static ArrayList<playerData> playerDataCache = new ArrayList<playerData>();
 ```
 ```java
-public playerData(String name, int stars, String rank, boolean isNicked, double FKDR) { }
+public playerData(String name, int stars, String rank, boolean isNicked, double FKDR) { ... }
 ```
 
 ## Hypixel API
