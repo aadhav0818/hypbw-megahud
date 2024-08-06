@@ -9,13 +9,7 @@ public class playerCache {
 
     public playerCache() { }
 
-    public void addPlayerToCache(playerData player) {
-        playerDataCache.add(player);
-        String allPlayers = "";
-        for(playerData tempPlayer : playerDataCache) {
-            allPlayers += tempPlayer.getName();
-        }
-    }
+    public void addPlayerToCache(playerData player) { playerDataCache.add(player); }
 
     public void clearCache() {
         playerDataCache.clear();
