@@ -20,3 +20,6 @@ build
 # other
 eclipse
 run
+
+#tokens
+src/main/java/com/mod/hypixelmegahud/tokens/apiAuth.java
