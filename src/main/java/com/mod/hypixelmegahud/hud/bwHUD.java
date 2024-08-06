@@ -43,6 +43,13 @@ public class bwHUD {
     private ArrayList<String> playerNames = new ArrayList<String>();
     private playerCache sessionCache = new playerCache();
 
+    private int final_kills;
+    private int final_deaths;
+    private int wins;
+    private int losses;
+    private int beds_broken;
+    private int beds_lost;
+
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) throws IOException {
         if (event.type == RenderGameOverlayEvent.ElementType.TEXT) {
