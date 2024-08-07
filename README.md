@@ -2,13 +2,21 @@
 # hypbw-megahud 
 
 ## About
-
 - Made using the 1.8.9 Minecraft Forge MDK in Gradle 2.7 and Java 8.
-- Provides users on the Hypixel Network (IP: mc.hypixel.net) with an advanced display featuring player FKDRs and levels.
-- Does not impact frame rates due to API calls and runs all requests asynchronously. 
+- Provides users on the Hypixel Network (IP: mc.hypixel.net) with advanced QOL features.
+- Does not impact frame rates and uses minimal storage. 
+- API requests are run asynchronously to reduce lag. 
 - Requires a developer key to access player statistics on the server.
 
+## Key Features
+| HUD    | File | Description |
+| -------- | ------- | ------- |
+| Lobby Stats    | `bwHUD.java`    | Displays player FKDRs, names, stars, ranks, and  more. |
+| Session Stats | `sessionStatsHUD.java`    |Displays session statistics such as FKDR, KDR, BBLR, and WLR.|
+
+
 ## Data Storage and Caching
+- JSON data from the Hypixel API is the only data that is used and collected by this application.
 - All user JSON files that are fetched are cached as `playerData` objects for the entirety of application's session to reduce the amount of API calls that are made.
 
 ```java
