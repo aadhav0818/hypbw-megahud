@@ -104,7 +104,7 @@ public class sessionStatsHUD {
         fr.drawStringWithShadow("Deaths: ", 15 + xShift, resolution.getScaledHeight() - 85 - yShift, 0xffffff);
         fr.drawStringWithShadow(String.valueOf(deaths), 54 + xShift, resolution.getScaledHeight() - 85 - yShift, 0xed665f);
 
-        fr.drawStringWithShadow("BBLR: " + KDR, 15 + xShift, resolution.getScaledHeight() - 70 - yShift, 0xf5c400);
+        fr.drawStringWithShadow("BBLR: " + BBLR, 15 + xShift, resolution.getScaledHeight() - 70 - yShift, 0xf5c400);
         fr.drawStringWithShadow("Beds Broken: ", 15 + xShift, resolution.getScaledHeight() - 60 - yShift, 0xffffff);
         fr.drawStringWithShadow(String.valueOf(bedsBroken), 83 + xShift, resolution.getScaledHeight() - 60 - yShift, 0x00ff62);
         fr.drawStringWithShadow("Beds Lost: ", 15 + xShift, resolution.getScaledHeight() - 50 - yShift, 0xffffff);
