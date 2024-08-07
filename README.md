@@ -7,6 +7,7 @@
 - Does not impact frame rates and uses minimal storage. 
 - API requests are run asynchronously to reduce lag. 
 - Requires a developer key to access player statistics on the server.
+- This repository can also be used as a general example for Forge modding in version 1.8.9.
 
 ## Key Features
 | HUD    | File | Description |
