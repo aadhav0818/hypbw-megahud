@@ -37,18 +37,13 @@ import java.util.concurrent.TimeUnit;
 public class bwHUD {
 
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    private ArrayList<playerData> serverPlayers = new ArrayList<playerData>();
-    private boolean isInBWGame = false;
-    private boolean gameStarted = false;
+    private static ArrayList<playerData> serverPlayers = new ArrayList<playerData>();
+    private static boolean isInBWGame = false;
+    private static boolean gameStarted = false;
+    private static int sessionGames = 0;
     private ArrayList<String> playerNames = new ArrayList<String>();
     private playerCache sessionCache = new playerCache();
 
-    private int final_kills;
-    private int final_deaths;
-    private int wins;
-    private int losses;
-    private int beds_broken;
-    private int beds_lost;
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) throws IOException {
@@ -68,6 +63,7 @@ public class bwHUD {
         }
         else if(message.contains("Protect your bed and destroy the enemy beds.") && isInBWGame) {
             gameStarted = true;
+            sessionGames++;
         }
         else if(message.contains("has quit!") && isInBWGame) {
             String[] quitMessage = message.split(" ");
@@ -205,6 +201,14 @@ public class bwHUD {
             System.out.println("NULL POINTER");
         }
     }
+
+    public static ArrayList<playerData> getServerPlayers() { return serverPlayers; }
+
+    public static boolean getIsInBWGame() { return isInBWGame; }
+
+    public static boolean getIsGameStarted() {return gameStarted; }
+
+    public static int getSessionGames() { return sessionGames; }
 
     public void fetchPlayerDataAsync(String playerName) {
         apiAuth apiAuthenticator = new apiAuth();
