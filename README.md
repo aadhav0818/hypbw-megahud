@@ -54,7 +54,7 @@ dependencies {
 ```
 
 ## Gradle
-- If you're trying to create a mod in 1.8.9, you must change the  `mappings` attribute in your `build.gradle` file needs to be changed from `stable_20` to `stable_22`.
+- If you're trying to create a mod in 1.8.9, you must change the  `mappings` attribute in your `build.gradle` file from `stable_20` to `stable_22`.
 ```
 minecraft {
     version = "1.8.9-11.15.1.2318-1.8.9"
