@@ -13,6 +13,7 @@
 | -------- | ------- | ------- |
 | Lobby Stats    | `bwHUD.java`    | Displays player FKDRs, names, stars, ranks, and  more. |
 | Session Stats | `sessionStatsHUD.java`    |Displays session statistics such as FKDR, KDR, BBLR, and WLR.|
+| Potion Effects | `potionEffectsHUD.java`    |Displays active potion effects in MM:SS format with a visually striking countdown system.|
 
 
 ## Data Storage and Caching

@@ -3,6 +3,7 @@ package com.mod.hypixelmegahud;
 
 import com.mod.hypixelmegahud.hud.bwHUD;
 
+import com.mod.hypixelmegahud.hud.potionEffectHUD;
 import com.mod.hypixelmegahud.hud.sessionStatsHUD;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -32,6 +33,7 @@ public class HypixelMegaHUD { // select ExampleMod and hit shift+F6 to rename it
 
         MinecraftForge.EVENT_BUS.register(new bwHUD());
         MinecraftForge.EVENT_BUS.register(new sessionStatsHUD());
+        MinecraftForge.EVENT_BUS.register(new potionEffectHUD());
 
         if (Loader.isModLoaded("patcher")) { }
 
