@@ -3,7 +3,7 @@
 
 ## About
 - Made using the 1.8.9 Minecraft Forge MDK in Gradle 2.7 and Java 8.
-- Provides users on the Hypixel Network (IP: mc.hypixel.net) with advanced QOL features.
+- Provides users on the Hypixel Network (IP: mc.hypixel.net) with advanced QOL features, specifically in Hypixel Bedwars.
 - Does not impact frame rates and uses minimal storage. 
 - API requests are run asynchronously to reduce lag. 
 - Requires a developer key to access player statistics on the server.
