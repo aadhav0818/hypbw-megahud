@@ -7,6 +7,7 @@
 - Does not impact frame rates and uses minimal storage. 
 - API requests are run asynchronously to reduce lag. 
 - Requires a developer key to access player statistics on the server.
+- This repository can also be used as a general example for Forge HUD modding in version 1.8.9.
 
 ## Key Features
 | HUD    | File | Description |
@@ -51,6 +52,16 @@ https://api.hypixel.net/player?key="insert key"&name="insert name"
 ```groovy
 dependencies {
     compile 'com.google.code.gson:gson:2.7'
+}
+```
+
+## Gradle
+- If you're trying to create a mod in 1.8.9, you must change the  `mappings` attribute in your `build.gradle` file from `stable_20` to `stable_22`.
+```
+minecraft {
+    version = "1.8.9-11.15.1.2318-1.8.9"
+    runDir = "run"
+    mappings = "stable_22"
 }
 ```
 
